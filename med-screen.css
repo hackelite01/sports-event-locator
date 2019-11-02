@@ -1,0 +1,10 @@
+@media screen and (min-width: 480px) and (max-width:750px) {
+  h1 {
+    font-size: 26px;
+  }
+
+  .sport {
+    width: 45%;
+  }
+
+}

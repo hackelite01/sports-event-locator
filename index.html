@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="med-screen.css">
+  <link rel="stylesheet" href="large-screen.css">
+  <link rel="stylesheet" href="https://yarnpkg.com/en/package/normalize.css">
+  <title>Sports Event Locator</title>
+</head>
+<body>
+  <section>
+    <header class="app-head"><h1>Sports Locator App</h1></header>
+  </section>
+  <nav class="nav-bar hidden">
+      <ul class="nav-list">
+        <li class="nav-item" id="nav-loc" value="location">Location</li>
+        <li class="nav-item" id="nav-sport" value="sports">Sports</li>
+      </ul>
+  </nav>
+  <main>
+    
+    <p class="intro">Welcome to Sports locator App. Here you will be able to find live sports events in your state.</p>
+    <p class="intro">Start by selecting the state in which you would like to see results</p>
+    <form class="options-form">
+
+      <div class="location-selection">
+        <h2 class="option-head">Select Location</h2>
+        <label for="state">Enter 2 digit State Code</label>
+        <input id="state" type="text" value="e.g. NY">
+        <input class="next js-loc-next" type="button" value="Next">
+      </div>
+
+      <div class="sport-selection hidden">
+        <h2 class="option-head">Select Sports</h2>
+        <ul id="sport-list">
+          <li class="sport" id="football">Football (NFL)</li>
+          <li class="sport" id="tennis">Tennis</li>
+          <li class="sport" id="soccer">Soccer (MLS)</li>
+          <li class="sport" id="mlb">Baseball (MLB)</li>
+          <li class="sport" id="nba">Basketball (NBA)</li>
+          <li class="sport" id="auto_racing">Motor Racing</li>
+          <li class="sport" id="golf">Golf (PGA Tour)</li>
+        </ul>
+      </div>
+
+      <input class="js-submit submit hidden" type="submit" value="Submit">
+      
+    </form>
+
+    <div class="map hidden"></div>
+    <div class="results-list hidden">
+      <ul class="events-list">Results</ul>
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</body>
+</html>
