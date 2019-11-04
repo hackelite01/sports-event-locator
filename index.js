@@ -3,7 +3,13 @@ function handleClicks() {
   navListner();     
   sportsSelection();
   handleNext();
+  clearInput()
+}
 
+function clearInput() {
+  $("#state").on("click", function() {
+    $(this).val("");
+  })
 }
 
 function formListener() {
@@ -14,19 +20,17 @@ function formListener() {
     $(".navbar").removeClass("hidden")
     $(".map").removeClass("hidden")
 
-    // Get state slection from form
+    // Get state slection from form  
     let state = $("#state").val();
     //Get selected sports from form
     let sports = selectedSports();
-    
     // Build url for API
     url = buildQuery(sports, state);
-    
+
     fetch(url)
     .then(response => response.json())
-    .then(jsonResponse => displayEventsList(jsonResponse))
+    .then(jsonResponse => displayEvents(jsonResponse, state))
     .catch(error => alert(`There was a problem: ${error}. Please try again`))
-
     $(".js-loc-next").addClass("hidden");
     $(".js-submit").val("Update")
   })
@@ -78,32 +82,81 @@ function selectedSports() {
   return sports;
 }
 
-// Google maps interactions
-// click event and show info
-
-function displayEventsList(jsonData) {
+function displayEvents(jsonData, state) {
   let events = jsonData.events;
   // Clear results list
   $(".events-list").html("");
-  // Display returned events on map
-  for (let i = 0; i < events.length; i++) {
-    console.log(`no events: ${jsonData.meta.total}`)
-    $(".events-list").append(`<li class="event">${jsonData.events[i].title}</li>`)
-  }
-  $(".results-list").removeClass("hidden");
+  
+  displayEventsList(state, events);
+  displayEventsMap(state, events);
+
+  // Show nav/options menu and hide other controls
   $(".nav-bar").removeClass("hidden");
   $(".intro").addClass("hidden");
   $(".sport-selection").addClass("hidden");
   $(".js-submit").addClass("hidden");
-
 }
+
+// Display list of events
+function displayEventsList(state, events) {
+
+  for (let i = 0; i < events.length; i++) {
+    $(".events-list").append(`<li class="event">${events[i].title}</li>`)
+  }
+
+  $(".results-list").removeClass("hidden");
+}
+
+function displayEventsMap(state, events) {
+   // Set map options
+  let options = {
+    zoom: 7, 
+  };
+  let map = new google.maps.Map(document.getElementById('map'), options);
+  let geocoder = new google.maps.Geocoder();
+  //Center map on selected State
+  geocoder.geocode( { 'address': state }, function(results) {
+    map.setCenter(results[0].geometry.location);
+  });
+
+  //Place event Markers
+  for (let i = 0; i < events.length; i++) {
+    let locLat = events[i].venue.location.lat;
+    let locLng = events[i].venue.location.lon;
+    let eventDescription = `<div>
+        <h4 class="event-name">${events[i].title}<h4>
+        <h5 class="venue-name">${events[i].venue.name}<h5>
+        <h6 class="venue-address">${events[i].venue.address}, ${events[i].venue.display_location}</h6>
+        </div>`;
+
+    let infowindow = new google.maps.InfoWindow({
+      content: eventDescription
+    });    
+
+    let marker = new google.maps.Marker({position: {lat: locLat, lng: locLng}, map: map, title: `${events[i].title}`});
+    
+    
+    marker.addListener("click", function() {
+      infowindow.open(map, marker);
+    })
+  }
+}
+
+// Google maps interactions
+// click event and show info
 
 function handleNext() {
   $(".js-loc-next").on("click", function() {
-    $(".location-selection").addClass("hidden");
-    $(".sport-selection").removeClass("hidden");
-    $(".js-submit").removeClass("hidden");
-  })
-}
+    let state = $("#state").val();
+
+    if (state.length !== 2) {
+      alert("Please enter 2 digit state code. eg. FL or NY etc");
+    } else {
+      $(".location-selection").addClass("hidden");
+      $(".sport-selection").removeClass("hidden");
+      $(".js-submit").removeClass("hidden");
+      }
+    })
+  }
 
 $(handleClicks);
