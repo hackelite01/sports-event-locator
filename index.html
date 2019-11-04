@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="med-screen.css">
   <link rel="stylesheet" href="large-screen.css">
-  <link rel="stylesheet" href="https://yarnpkg.com/en/package/normalize.css">
+<!--  <link rel="stylesheet" href="https://yarnpkg.com/en/package/normalize.css">-->
   <title>Sports Event Locator</title>
 </head>
 <body>
@@ -28,8 +28,8 @@
       <div class="location-selection">
         <h2 class="option-head">Select Location</h2>
         <label for="state">Enter 2 digit State Code</label>
-        <input id="state" type="text" value="e.g. NY">
-        <input class="next js-loc-next" type="button" value="Next">
+        <input id="state" type="text" value="e.g. NY" required>
+        <input class="next js-loc-next" type="button" value="Next" >
       </div>
 
       <div class="sport-selection hidden">
@@ -49,12 +49,14 @@
       
     </form>
 
-    <div class="map hidden"></div>
+    <div class="map hidden" id="map"></div>
     <div class="results-list hidden">
       <ul class="events-list">Results</ul>
     </div>
   </main>
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   <script src="index.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDidD3i6ksEApaIp2muKG8ZGMU2WboPU7U">
+</script>
 </body>
 </html>

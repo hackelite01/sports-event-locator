@@ -31,6 +31,12 @@ h1 {
 
 .events-list, .nav-list, #sport-list {
   list-style-type: none;
+  margin: 20px;
+  padding: 0px;
+}
+
+.events-list {
+
 }
 
 .nav-list {
@@ -49,6 +55,10 @@ h1 {
 #state {
   width: 60px;
   display: inline-block;
+}
+
+.map {
+  height: 300px;
 }
 
 #sport-list {
@@ -70,10 +80,36 @@ h1 {
 .submit, .next {
   position: absolute;
   right: auto;
+  clear: both;
 }
 
 .submit {
-  margin-bottom: 15px;
+  margin-right: auto;
 }
 
+.event-name {
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.event-name {
+  margin-top: -2px;
+  margin-bottom: -5px;
+  padding: 2px;
+
+}
+
+.venue-name {
+  margin-top: -5px;
+  margin-bottom: -2px;
+}
+
+.venue-address {
+  margin-top: -15px; 
+  margin-bottom: 0px;
+}
+
+.gm-style .gm-style-iw-c {
+  padding: 5px 0px 0px 5px;
+}
 
