@@ -85,7 +85,7 @@ function selectedSports() {
 function displayEvents(jsonData, state) {
   let events = jsonData.events;
   // Clear results list
-  $(".events-list").html("");
+  $(".events-list").html(`<h3>Sports Events in ${state}</h3>`);
   
   displayEventsList(state, events);
   displayEventsMap(state, events);
@@ -101,7 +101,8 @@ function displayEvents(jsonData, state) {
 function displayEventsList(state, events) {
 
   for (let i = 0; i < events.length; i++) {
-    $(".events-list").append(`<li class="event">${events[i].title}</li>`)
+    let date = events[0].datetime_local.split("T")
+    $(".events-list").append(`<li class="event">${date[0]} | ${events[i].title} | ${events[i].venue.name} | ${events[i].taxonomies[1].name}</li>`)
   }
 
   $(".results-list").removeClass("hidden");

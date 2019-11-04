@@ -36,7 +36,7 @@ h1 {
 }
 
 .events-list {
-
+  margin-top: 50px;
 }
 
 .nav-list {
@@ -59,6 +59,7 @@ h1 {
 
 .map {
   height: 300px;
+  margin-top: 50px;
 }
 
 #sport-list {
