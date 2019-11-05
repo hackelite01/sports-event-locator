@@ -17,6 +17,7 @@
       <ul class="nav-list">
         <li class="nav-item" id="nav-loc" value="location">Location</li>
         <li class="nav-item" id="nav-sport" value="sports">Sports</li>
+        <li class="nav-item" id="nav-settings" value="settings">Settings</li>
       </ul>
   </nav>
   <main>
@@ -43,6 +44,13 @@
           <li class="sport" id="auto_racing">Motor Racing</li>
           <li class="sport" id="golf">Golf (PGA Tour)</li>
         </ul>
+      </div>
+
+      <div class="search-options hidden">
+        <h2 class="option-head">Search Settings</h2>
+        <label>No. events to display per page
+         <input type="number" value="10" id="no-events" max="100" min="1">
+        </label>
       </div>
 
       <input class="js-submit submit hidden" type="submit" value="Submit">
