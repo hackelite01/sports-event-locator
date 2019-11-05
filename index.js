@@ -32,6 +32,7 @@ function formListener() {
     .then(jsonResponse => displayEvents(jsonResponse, state))
     .catch(error => alert(`There was a problem: ${error}. Please try again`))
     $(".js-loc-next").addClass("hidden");
+    $(".location-selection").addClass("hidden");
     $(".js-submit").val("Update")
   })
 }
@@ -101,8 +102,8 @@ function displayEvents(jsonData, state) {
 function displayEventsList(state, events) {
 
   for (let i = 0; i < events.length; i++) {
-    let date = events[0].datetime_local.split("T")
-    $(".events-list").append(`<li class="event">${date[0]} | ${events[i].title} | ${events[i].venue.name} | ${events[i].taxonomies[1].name}</li>`)
+    let date = events[i].datetime_local.split("T")
+    $(".events-list").append(`<li class="event">${date[0]} | ${events[i].taxonomies[1].name} <br> ${events[i].title} <br> ${events[i].venue.name} </li><hr>`)
   }
 
   $(".results-list").removeClass("hidden");
@@ -142,9 +143,6 @@ function displayEventsMap(state, events) {
     })
   }
 }
-
-// Google maps interactions
-// click event and show info
 
 function handleNext() {
   $(".js-loc-next").on("click", function() {

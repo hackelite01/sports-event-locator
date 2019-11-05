@@ -88,6 +88,10 @@ h1 {
   margin-right: auto;
 }
 
+.event {
+  margin-bottom: 5px;
+}
+
 .event-name {
   font-weight: bold;
   font-size: 12px;
@@ -112,5 +116,9 @@ h1 {
 
 .gm-style .gm-style-iw-c {
   padding: 5px 0px 0px 5px;
+}
+
+.results-list {
+  width: 100%;
 }
 
