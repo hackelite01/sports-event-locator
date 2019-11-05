@@ -15,6 +15,10 @@ h1 {
   font-size: 18px;
 }
 
+.options-form {
+  margin: 0px auto;
+}
+
 .app-head {
   text-align: center;
 }
@@ -42,7 +46,6 @@ h1 {
 .nav-list {
   display: flex;
   justify-content: center;
-  background-color: lightslategray;
 }
 
 .nav-item {
@@ -54,6 +57,11 @@ h1 {
 
 #state {
   width: 60px;
+  display: inline-block;
+}
+
+#no-events {
+  width: 40px;
   display: inline-block;
 }
 
