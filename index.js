@@ -4,7 +4,7 @@ function handleClicks() {
   sportsSelection();
   handleNext();
   clearInput();
-  setDefaultDates();
+  setDefaultDate();
 }
 
 function clearInput() {
@@ -13,11 +13,9 @@ function clearInput() {
   })
 }
 
-function setDefaultDates() {
-  let start = $("#date-start").val()
-  let end = $('#date-end').val();
-
-  console.log(start);
+function setDefaultDate() {
+  let today = new Date().toISOString().slice(0, 10)
+  $("#date-start").val(`${today}`)
 }
 
 function formListener() {
@@ -136,13 +134,25 @@ function selectedSports() {
 
 function displayEvents(jsonData, state) {
   let events = jsonData.events;
-  // Clear results list
-  $(".events-list").html(`<h3>Sports Events in ${state}</h3>`);
 
+  // Check if there are events for given sports, in selected state 
   if (events.length > 0) {
-    displayEventsList(state, events);
-    displayEventsMap(state, events);
-  } else $(".events-list").html("No available events, during selected time period.")
+    
+    if ($("#display-map").is(":checked")) {
+      displayEventsMap(state, events);
+    } else {
+      $(".map").addClass("hidden");
+    }
+
+    if ($("#display-list").is(":checked")) {
+      // Clear results list
+      $(".events-list").html(`<h3>Sports Events in ${state}</h3>`);
+      displayEventsList(state, events);
+    } else {
+      $(".results-list").addClass("hidden");
+    }
+
+  } else $(".events-list").html(`<p>No available events in ${state}, during selected time period.</p>`)
 
   // Show nav/options menu and hide other controls
   $(".nav-bar").removeClass("hidden");
