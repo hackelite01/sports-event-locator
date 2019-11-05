@@ -3,13 +3,21 @@ function handleClicks() {
   navListner();     
   sportsSelection();
   handleNext();
-  clearInput()
+  clearInput();
+  setDefaultDates();
 }
 
 function clearInput() {
   $("#state").on("click", function() {
     $(this).val("");
   })
+}
+
+function setDefaultDates() {
+  let start = $("#date-start").val()
+  let end = $('#date-end').val();
+
+  console.log(start);
 }
 
 function formListener() {
@@ -26,8 +34,12 @@ function formListener() {
     let sports = selectedSports();
     // Get no events to displayed per page
     let eventCount = $("#no-events").val();
+    // Get user selected selected date range
+    let dateStart = $("#date-start").val();
+    let dateEnd = $("#date-end").val();
+
     // Build url for API
-    url = buildQuery(sports, state, eventCount);
+    url = buildQuery(sports, state, eventCount, dateStart, dateEnd);
 
     fetch(url)
     .then(response => response.json())
@@ -36,6 +48,7 @@ function formListener() {
     
     $(".js-loc-next").addClass("hidden");
     $(".location-selection").addClass("hidden");
+    $(".search-options").addClass("hidden");
     $(".js-submit").val("Update")
   })
 }
@@ -48,38 +61,55 @@ function navListner() {
     if (selection === "Location") {
       $(".location-selection").toggleClass("hidden");
       $(".sport-selection").addClass("hidden");
-      $(".nav-settings").addClass("hidden");
-      $(".js-submit").removeClass("hidden");
+      $(".search-options").addClass("hidden");
+
+
       $(".nav-sport").removeClass("selected");
-      $(".nav-loc").addClass("selected");
+      $(".nav-loc").removeClass("selected");
       $(".nav-settings").removeClass("selected");
+
+      $(".js-submit").removeClass("hidden");
     } else if (selection === "Sports") {
       $(".sport-selection").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
       $(".search-options").addClass("hidden");
-      $(".js-submit").removeClass("hidden");
+      
       $(".nav-loc").removeClass("selected");
-      $(".nav-sport").addClass("selected");
       $(".nav-settings").removeClass("selected");
+      $(".nav-sport").addClass("selected");
+
+      $(".js-submit").removeClass("hidden");
     } else if (selection === "Settings") {
       $(".search-options").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
       $(".sport-selection").addClass("hidden");
-      $(".js-submit").removeClass("hidden");
+      
       $(".nav-loc").removeClass("selected");
       $(".nav-sport").removeClass("selected");
       $(".nav-settings").addClass("selected");
+
+      $(".js-submit").removeClass("hidden");
     }
   })
 }
 
-function buildQuery(sports, state, perPage) {
+function buildQuery(sports, state, perPage, dateStart, dateEnd) {
+
   // Base url for event endpoint
   str = "https://api.seatgeek.com/2/events?client_id=MTkyNTE5NzR8MTU3MjU1NzY5Mi40MQ"
   // Add each sport to str
   sports.forEach(sport => str += `&taxonomies.name=${sport}`); 
   // Add each venue to str
   str += `&venue.state=${state}&per_page=${perPage}`
+
+  if (dateStart) {
+    str += `&datetime_local.gte=${dateStart}`
+  }
+
+  if (dateEnd) {
+    str += `&datetime_local.lte=${dateEnd}`
+  }
+
   return str
 }
 
