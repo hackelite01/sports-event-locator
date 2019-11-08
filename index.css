@@ -3,8 +3,8 @@
 }
 
 body {
-  font-family: 'Courier New', Courier, monospace;
-  padding: 10px;
+  font-family: 'Open Sans', sans-serif;
+  padding: 5px;
 }
 
 .hidden {
@@ -12,24 +12,43 @@ body {
 }
 
 h1 {
-  font-size: 18px;
+  color: #FF8300;
+  font-size: 2em;
+  display: inline-block;
+  text-transform: uppercase;
+  font-family: 'Unica One', cursive;
+}
+
+h3 {
+  color: white;
+  background-color: #FF8300;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 10px;
+  text-transform: uppercase;
+  font-family: 'Unica One', cursive;
+}
+
+.logo {
+  color: #FF8300;
+  padding: 10px;
+}
+
+.intro {
+  text-align: center;
 }
 
 .options-form {
-  margin: 0px auto;
+  text-align: center;
+
 }
 
 .app-head {
   text-align: center;
 }
 
-.selected {
-  border: rgb(0, 140, 255) 2px solid;
-}
-
 .location-selection {
   text-align: center;
-  width: 75%;
   margin: 0 auto;
 }
 
@@ -40,7 +59,7 @@ h1 {
 }
 
 .events-list {
-  margin-top: 50px;
+  margin: 25px 0px 0px 0px;
 }
 
 .nav-list {
@@ -48,11 +67,31 @@ h1 {
   justify-content: center;
 }
 
-.nav-item {
-  border: black 1px solid;
+.nav-item, .sport, .submit, .next {
+  border: #FF8300 1px solid;
   margin: 5px;
   padding: 5px;
+  color: #FF8300;
+  border-radius: 5px;
   cursor: pointer;
+  text-align: center;
+}
+
+.nav-item:hover, .submit:hover, .next:hover {
+  background-color: #FF9019;
+  color: white;
+  cursor: pointer;
+}
+
+.next {
+  width: 50px;
+  display: inline-block;
+}
+
+.submit {
+  font-size: 14px;
+  width: 70px;
+  margin: 25px auto;
 }
 
 #state {
@@ -67,49 +106,32 @@ h1 {
 
 .map {
   height: 300px;
-  margin-top: 50px;
+  margin-bottom: 25px;
 }
 
 #sport-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   flex-flow: wrap;
   padding: 0px;
+  margin: 0px;
 }
 
 .sport {
-  text-align: center;
   padding: 10px;
-  margin: 2px 10px;
   width: 80%;
-  background-color: lightsteelblue;
 }
 
-.submit, .next {
-  position: absolute;
-  right: auto;
-  clear: both;
-}
-
-.submit {
-  margin-right: auto;
+.sport:hover {
+  background-color: #FF9019;
+  color: white;
+  cursor: pointer;
 }
 
 .event {
   margin-bottom: 5px;
-}
-
-.event-name {
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.event-name {
-  margin-top: -2px;
-  margin-bottom: -5px;
   padding: 2px;
-
 }
 
 .venue-name {
@@ -126,7 +148,65 @@ h1 {
   padding: 5px 0px 0px 5px;
 }
 
-.results-list {
-  width: 100%;
+.event-left {
+  display: inline-block;
+  padding: 2px 8px 2px 2px;
+  background-color: #FF8300;
+  color: white;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  font-size: 12px;
+  text-align: right;
+  width: 85px;
 }
 
+.event-right {
+  display: inline-block;
+  width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: text-bottom;
+  font-size: 12px;
+}
+
+.event-name {
+  font-weight: bold;
+  text-align: left;
+  padding: 0px;
+}
+
+.event-type {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.selected {
+  background-color: #FF8300;
+  font-weight: bold;
+  color: white;
+}
+
+.search-option {
+  margin: 0 auto;
+}
+
+.date-selection {
+  width: 80%;
+}
+
+.dates-container {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+
+
+.display-map-option {
+
+}
+
+.display-list-option {
+
+}

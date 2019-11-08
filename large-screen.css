@@ -1,14 +1,55 @@
-@media screen and (min-width:751px) {
+@media screen and (min-width:751px) and (max-width:1250px) {
   h1 {
     font-size: 36px;
   }
   
   .map {
-    height: 650px;
+    height: 600px;
   }
 
-  .results-list {
-    width: 600px;
+  .sport {
+    width: 30%;
+  }
+
+}
+
+@media screen and (min-width:751px) {
+  .event-name {
+    font-size: 16px;
+  }
+
+  .event-venue {
+    font-size: 12px;
+  }
+
+  #sport-list {
+    flex-direction: row;
+    justify-content: left;
+  }
+
+  .event {
+    margin-left: 60px;
+  }
+
+  .options-form {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .event-left {
+    width: 120px;
+  }
+
+  .event-date {
+    font-size: 16px;
+  }
+
+  .event-type {
+    font-size: 12px;
+  }
+
+  .dates-container {
+    width: 70%;
   }
 
 }

@@ -1,4 +1,4 @@
-@media screen and (min-width: 480px) and (max-width:750px) {
+@media screen and (min-width: 400px) and (max-width:750px) {
   h1 {
     font-size: 26px;
   }
@@ -8,12 +8,25 @@
   }
 
   .map {
-    height: 400px;
+    height: 450px;
   }
 
   .results-list {
-    width: 90%;
+    width: 95%;
   }
-  
+
+  #sport-list {
+    flex-direction: row;
+    justify-content: left;
+  }
+
+  .event {
+    margin-left: 25px;
+  }
+
+  .dates-container {
+    width: 75%;
+  }
+
 
 }

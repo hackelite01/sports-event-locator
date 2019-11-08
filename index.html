@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Unica+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="med-screen.css">
   <link rel="stylesheet" href="large-screen.css">
+  <link rel="stylesheet" href="xlarge-screen.css">
   <link rel="stylesheet" href="https://yarnpkg.com/en/package/normalize.css">
+  <script src="https://kit.fontawesome.com/aec820073a.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDidD3i6ksEApaIp2muKG8ZGMU2WboPU7U"></script>
+  <script src="index.js"></script>
   <title>Sports Event Locator</title>
 </head>
 <body>
   <section>
-    <header class="app-head"><h1>Sports Locator App</h1></header>
+    <header class="app-head"><i class="fas fa-search-location fa-2x logo"></i><h1>Sports Locator</h1></header>
   </section>
-  <nav class="nav-bar hidden">
+  <nav role="navigation" class="nav-bar hidden">
       <ul class="nav-list">
         <li class="nav-item" id="nav-loc" value="location">Location</li>
         <li class="nav-item" id="nav-sport" value="sports">Sports</li>
@@ -21,75 +27,78 @@
       </ul>
   </nav>
   <main>
-    
-    <p class="intro">Welcome to Sports locator App. Here you will be able to find live sports events in your state.</p>
-    <p class="intro">Start by selecting the state in which you would like to see results</p>
+    <div class="intro">
+      <p>Welcome to Sports Locator App.</p>
+      <p>Here you will be able to find live sports events in any state.</p>
+      <p>Start by selecting the state in which you would like to see results.</p>
+    </div>
     <form class="options-form">
 
       <div class="location-selection">
-        <h2 class="option-head">Select Location</h2>
-        <label for="state">Enter 2 digit State Code</label>
+        <h3 class="option-head">Select Location</h3>
+        <label for="state">Enter State Code</label>
         <input id="state" type="text" value="e.g. NY" required>
-        <input class="next js-loc-next" type="button" value="Next" >
+        <div class="next js-loc-next">Next</div>
+        <div class="js-submit submit hidden">Submit</div>
       </div>
 
       <div class="sport-selection hidden">
-        <h2 class="option-head">Select Sports</h2>
+        <h3 class="option-head">Select Sports</h3>
         <ul id="sport-list">
-          <li class="sport" id="football">Football (NFL)</li>
-          <li class="sport" id="tennis">Tennis</li>
-          <li class="sport" id="soccer">Soccer (MLS)</li>
-          <li class="sport" id="mlb">Baseball (MLB)</li>
-          <li class="sport" id="nba">Basketball (NBA)</li>
-          <li class="sport" id="auto_racing">Motor Racing</li>
-          <li class="sport" id="golf">Golf (PGA Tour)</li>
+          <li class="sport" id="football" tabindex="0">Football (NFL)</li>
+          <li class="sport" id="tennis" tabindex="0">Tennis</li>
+          <li class="sport" id="soccer" tabindex="0">Soccer (MLS)</li>
+          <li class="sport" id="mlb" tabindex="0">Baseball (MLB)</li>
+          <li class="sport" id="nba" tabindex="0">Basketball (NBA)</li>
+          <li class="sport" id="auto_racing" tabindex="0">Motor Racing</li>
+          <li class="sport" id="golf" tabindex="0">Golf (PGA Tour)</li>
         </ul>
+        <div class="js-submit submit hidden">Submit</div>
       </div>
 
       <div class="search-options hidden">
         <h3 class="option-head">Search Settings</h2>
 
-        <div class="search-option">
-          <h4>Search - Date Range</h3>
-          <label>No. events to display per page
-            <input type="number" value="10" id="no-events" max="100" min="1">
-          </label>
+        <div class="search-option date-selection">
+          <h4>Date Range</h4>
+          <div class="dates-container">
+            <label>Start Date
+             <input type="date" id="date-start">
+            </label>
+            <label>End Date
+             <input type="date" id="date-end">
+            </label>
+          </div>  
         </div>
 
         <div class="search-option">
-          <h4>Search - Date Range</h3>
-          <label>Start Date
-            <input type="date" id="date-start">
-          </label>
-          <label>End Date
-            <input type="date" id="date-end">
-          </label>
-        </div>
-
-        <div class="search-option">
-          <h4>Display Options</h3>
-          <label>Map
-            <input id="display-map" type="checkbox" checked>
-          </label>
-          <label>List
-            <input id="display-list" type="checkbox" checked>
-          </label>
+          <h4>Display Options</h4>
+          <div class="display-map">
+            <label>Map
+              <input id="display-map" type="checkbox" checked>
+            </label>
+            <label class="display-list">List
+              <input id="display-list" type="checkbox" checked>
+            </label>
+          </div>
+          <div>
+            <label>No. events to display per page
+              <input type="number" value="10" id="no-events" max="100" min="1">
+            </label>
+          </div>
+          <div class="js-submit submit hidden">Submit</div>
         </div>
 
       </div>
-
-      <input class="js-submit submit hidden" type="submit" value="Submit">
       
     </form>
 
-    <div class="map hidden" id="map"></div>
-    <div class="results-list hidden">
-      <ul class="events-list"></ul>
+    <div class="results">
+      <div class="map hidden" id="map"></div>
+      <div class="results-list hidden"></div>
     </div>
+
   </main>
-  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-  <script src="index.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDidD3i6ksEApaIp2muKG8ZGMU2WboPU7U">
 </script>
 </body>
 </html>

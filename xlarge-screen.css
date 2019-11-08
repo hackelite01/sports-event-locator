@@ -1,0 +1,38 @@
+@media screen and (min-width:1251px) {
+  
+  h1 {
+    font-size: 36px;
+  }
+
+  h3 {
+    margin-top: 0px;
+  }
+  
+  .map {
+    height: 700px;
+  }
+
+  .results {
+    flex-direction: row-reverse;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .results-list {
+    display: inline-block;
+    margin-left: 25px;
+    padding-top: 50px;
+    width: 50%;
+  }
+
+  .sport {
+    width: 23%;
+  }
+
+  .map {
+    width: 50%;
+    display: inline-block;
+    margin-top: 50px;
+  }
+
+}

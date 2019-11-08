@@ -12,7 +12,7 @@ function clearInput() {
     $(this).val("");
   })
 }
-
+//Set Starting date to "today"
 function setDefaultDate() {
   let today = new Date().toISOString().slice(0, 10)
   $("#date-start").val(`${today}`)
@@ -61,32 +61,31 @@ function navListner() {
       $(".sport-selection").addClass("hidden");
       $(".search-options").addClass("hidden");
 
+      $("#nav-loc").toggleClass("selected");
+      $("#nav-sport").removeClass("selected");
+      $("#nav-settings").removeClass("selected");
 
-      $(".nav-sport").removeClass("selected");
-      $(".nav-loc").removeClass("selected");
-      $(".nav-settings").removeClass("selected");
-
-      $(".js-submit").removeClass("hidden");
+      $(".js-submit").removeClass("hidden")
     } else if (selection === "Sports") {
       $(".sport-selection").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
       $(".search-options").addClass("hidden");
       
-      $(".nav-loc").removeClass("selected");
-      $(".nav-settings").removeClass("selected");
-      $(".nav-sport").addClass("selected");
+      $("#nav-loc").removeClass("selected");
+      $("#nav-sport").toggleClass("selected");
+      $("#nav-settings").removeClass("selected");
 
-      $(".js-submit").removeClass("hidden");
+      $(".js-submit").removeClass("hidden")
     } else if (selection === "Settings") {
       $(".search-options").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
       $(".sport-selection").addClass("hidden");
       
-      $(".nav-loc").removeClass("selected");
-      $(".nav-sport").removeClass("selected");
-      $(".nav-settings").addClass("selected");
+      $("#nav-loc").removeClass("selected");
+      $("#nav-sport").removeClass("selected");
+      $("#nav-settings").toggleClass("selected");
 
-      $(".js-submit").removeClass("hidden");
+      $(".js-submit").removeClass("hidden")
     }
   })
 }
@@ -116,9 +115,10 @@ function sportsSelection() {
     $(this).toggleClass("selected");
 
     if ($(".sport.selected").length === 0) {
-      $(".js-submit").addClass("hidden")
-    } else $(".js-submit").removeClass("hidden")
-
+      $(".js-submit").addClass("hidden");
+    } else {
+        $(".js-submit").removeClass("hidden");
+    }
   })
 }
 
@@ -146,13 +146,18 @@ function displayEvents(jsonData, state) {
 
     if ($("#display-list").is(":checked")) {
       // Clear results list
-      $(".events-list").html(`<h3>Sports Events in ${state}</h3>`);
+      $(".results-list").html(`<h3>Sports Events in ${state}</h3>
+                                <ul class="events-list"></ul>
+                              `);
       displayEventsList(state, events);
     } else {
       $(".results-list").addClass("hidden");
     }
 
-  } else $(".events-list").html(`<p>No available events in ${state}, during selected time period.</p>`)
+  } else { 
+    $(".events-list").html(`<p>No available events in ${state}, during selected time period.</p>`);
+    $(".map").addClass("hidden");
+  }
 
   // Show nav/options menu and hide other controls
   $(".nav-bar").removeClass("hidden");
@@ -165,8 +170,17 @@ function displayEvents(jsonData, state) {
 function displayEventsList(state, events) {
 
   for (let i = 0; i < events.length; i++) {
-    let date = events[i].datetime_local.split("T")
-    $(".events-list").append(`<li class="event">${date[0]} | ${events[i].taxonomies[1].name} <br> ${events[i].title} <br> ${events[i].venue.name} </li><hr>`)
+    let date = events[i].datetime_local.split("T");
+    let eventType = events[i].taxonomies[1].name.split("_").join(" ");
+    $(".events-list").append(`<li class="event">
+                                <div class="event-left">
+                                  <div class="event-date">${date[0]}</div>
+                                  <div class="event-type">${eventType}</div> 
+                                </div>
+                                <div class="event-right"><div class="event-name">${events[i].title}</div>
+                                                          <div class="event-venue">${events[i].venue.name}</div>
+                                                        </div>
+                              </li>`)
   }
 
   $(".results-list").removeClass("hidden");
