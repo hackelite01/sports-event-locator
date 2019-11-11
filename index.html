@@ -27,69 +27,70 @@
       </ul>
   </nav>
   <main>
+
     <div class="intro">
-      <p>Welcome to Sports Locator App.</p>
-      <p>Here you will be able to find live sports events in any state.</p>
+      <p>Find live sports events in any state.</p>
       <p>Start by selecting the state in which you would like to see results.</p>
     </div>
+
     <form class="options-form">
+      <fieldset class="location-selection">
+          <h3 class="option-head">Select Location</h3>
+          <label for="state">Enter State Code</label>
+          <input id="state" type="text" value="e.g. NY" pattern="[A-Za-z]{2}" required>
+          <input class="next js-loc-next" value="Next" type="button">
+          <input class="js-submit submit hidden" type="submit" disabled>
+      </fieldset> 
 
-      <div class="location-selection">
-        <h3 class="option-head">Select Location</h3>
-        <label for="state">Enter State Code</label>
-        <input id="state" type="text" value="e.g. NY" required>
-        <div class="next js-loc-next">Next</div>
-        <div class="js-submit submit hidden">Submit</div>
-      </div>
+      <fieldset class="sport-selection hidden">
+          <h3 class="option-head">Select Sports</h3>
+          
+          <ul id="sport-list">
+            <li class="sport" id="football">Football (NFL)</li>
+            <li class="sport" id="tennis">Tennis</li>
+            <li class="sport" id="soccer">Soccer (MLS)</li>
+            <li class="sport" id="mlb">Baseball (MLB)</li>
+            <li class="sport" id="nba">Basketball (NBA)</li>
+            <li class="sport" id="auto_racing">Motor Racing</li>
+            <li class="sport" id="golf">Golf (PGA Tour)</li>
+            <li class="sport" id="fighting" >Combat Sports</li>
+          </ul>
 
-      <div class="sport-selection hidden">
-        <h3 class="option-head">Select Sports</h3>
-        <ul id="sport-list">
-          <li class="sport" id="football" tabindex="0">Football (NFL)</li>
-          <li class="sport" id="tennis" tabindex="0">Tennis</li>
-          <li class="sport" id="soccer" tabindex="0">Soccer (MLS)</li>
-          <li class="sport" id="mlb" tabindex="0">Baseball (MLB)</li>
-          <li class="sport" id="nba" tabindex="0">Basketball (NBA)</li>
-          <li class="sport" id="auto_racing" tabindex="0">Motor Racing</li>
-          <li class="sport" id="golf" tabindex="0">Golf (PGA Tour)</li>
-        </ul>
-        <div class="js-submit submit hidden">Submit</div>
-      </div>
+          <input class="js-submit submit hidden" type="submit">
+      </fieldset>
 
-      <div class="search-options hidden">
-        <h3 class="option-head">Search Settings</h2>
+      <fieldset class="search-options hidden">
+          <h3 class="option-head">Search Settings</h2>
 
-        <div class="search-option date-selection">
-          <h4>Date Range</h4>
-          <div class="dates-container">
-            <label>Start Date
-             <input type="date" id="date-start">
-            </label>
-            <label>End Date
-             <input type="date" id="date-end">
-            </label>
-          </div>  
-        </div>
-
-        <div class="search-option">
-          <h4>Display Options</h4>
-          <div class="display-map">
-            <label>Map
-              <input id="display-map" type="checkbox" checked>
-            </label>
-            <label class="display-list">List
-              <input id="display-list" type="checkbox" checked>
-            </label>
+          <div class="search-option date-selection">
+            <h4>Date Range</h4>
+            <div class="dates-container">
+              <label>Start Date
+              <input type="date" id="date-start">
+              </label>
+              <label>End Date
+              <input type="date" id="date-end">
+              </label>
+            </div>  
           </div>
-          <div>
-            <label>No. events to display per page
-              <input type="number" value="10" id="no-events" max="100" min="1">
-            </label>
-          </div>
-          <div class="js-submit submit hidden">Submit</div>
-        </div>
 
-      </div>
+          <div class="search-option">
+            <h4>Display Options</h4>
+            <div class="display-map">
+              <label>Map
+                <input id="display-map" type="checkbox" checked>
+              </label>
+              <label class="display-list">List
+                <input id="display-list" type="checkbox" checked>
+              </label>
+            </div>
+            <div>
+              <label>No. events to display
+                <input type="number" value="10" id="no-events" max=200 min="1">
+              </label>
+            </div>
+            <input class="js-submit submit hidden" type="submit" value="Submit">
+        </fieldset>
       
     </form>
 

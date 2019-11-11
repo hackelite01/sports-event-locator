@@ -7,21 +7,16 @@
   h3 {
     margin-top: 0px;
   }
-  
-  .map {
-    height: 700px;
-  }
 
   .results {
-    flex-direction: row-reverse;
     display: flex;
-    align-items: flex-start;
+    flex-direction: row-reverse;
+    justify-content: center;
   }
 
   .results-list {
     display: inline-block;
     margin-left: 25px;
-    padding-top: 50px;
     width: 50%;
   }
 
@@ -30,9 +25,18 @@
   }
 
   .map {
+    height: 700px;
     width: 50%;
     display: inline-block;
-    margin-top: 50px;
+  }
+
+  .events-list {
+    overflow-y: scroll;
+    height: 633px;
+  }
+
+  .hidden {
+    display: none;
   }
 
 }

@@ -6,7 +6,7 @@ function handleClicks() {
   clearInput();
   setDefaultDate();
 }
-
+// Clear sample text on text input click
 function clearInput() {
   $("#state").on("click", function() {
     $(this).val("");
@@ -19,12 +19,11 @@ function setDefaultDate() {
 }
 
 function formListener() {
-  $("form").on("click", ".js-submit", function(event) {
+  $("form").on("submit", function(event) {
     event.preventDefault();
 
     // Display Navigation and Map on form submit
     $(".navbar").removeClass("hidden")
-    $(".map").removeClass("hidden")
 
     // Get state slection from form  
     let state = $("#state").val();
@@ -36,18 +35,47 @@ function formListener() {
     let dateStart = $("#date-start").val();
     let dateEnd = $("#date-end").val();
 
+    // Input validation before API calling
+    if ((checkStateFormat()) && (sports.length > 0)) {
+     
     // Build url for API
     url = buildQuery(sports, state, eventCount, dateStart, dateEnd);
-
+    // Fetch data from url  
     fetch(url)
     .then(response => response.json())
     .then(jsonResponse => displayEvents(jsonResponse, state))
     .catch(error => alert(`There was a problem: ${error}. Please try again`))
-    
+    //Hide options after data has been displayed
     $(".js-loc-next").addClass("hidden");
     $(".location-selection").addClass("hidden");
     $(".search-options").addClass("hidden");
     $(".js-submit").val("Update")
+  
+    } else {
+        if (!(checkStateFormat())) { // Display location selection if no location entered
+          alert("Please enter 2 digit state code. eg. FL or NY etc");
+
+          $(".location-selection").removeClass("hidden");
+          $("#nav-loc").addClass("selected");
+
+          $(".sport-selection").addClass("hidden");
+          $("#nav-sport").removeClass("selected");
+
+          $(".search-options").addClass("hidden");
+          $("#nav-settings").removeClass("selected");
+        } else {  // Display sports selection if no sport selected
+          alert(`Please select at least one sports to search`);
+
+          $(".sport-selection").removeClass("hidden");
+          $("#nav-sport").addClass("selected");
+
+          $(".location-selection").addClass("hidden");
+          $("#nav-loc").removeClass("selected");
+
+          $(".search-options").addClass("hidden");
+          $("#nav-settings").removeClass("selected");
+        }
+      }
   })
 }
 
@@ -55,7 +83,7 @@ function navListner() {
   $(".nav-list").on("click", "li", function() {
 
     let selection = $(this).html();
-
+    // Toggle slected menu and hide others 
     if (selection === "Location") {
       $(".location-selection").toggleClass("hidden");
       $(".sport-selection").addClass("hidden");
@@ -65,7 +93,7 @@ function navListner() {
       $("#nav-sport").removeClass("selected");
       $("#nav-settings").removeClass("selected");
 
-      $(".js-submit").removeClass("hidden")
+      $(".js-submit").removeClass("hidden");
     } else if (selection === "Sports") {
       $(".sport-selection").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
@@ -75,7 +103,7 @@ function navListner() {
       $("#nav-sport").toggleClass("selected");
       $("#nav-settings").removeClass("selected");
 
-      $(".js-submit").removeClass("hidden")
+      $(".js-submit").removeClass("hidden");
     } else if (selection === "Settings") {
       $(".search-options").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
@@ -85,13 +113,12 @@ function navListner() {
       $("#nav-sport").removeClass("selected");
       $("#nav-settings").toggleClass("selected");
 
-      $(".js-submit").removeClass("hidden")
+      $(".js-submit").removeClass("hidden");
     }
   })
 }
 
 function buildQuery(sports, state, perPage, dateStart, dateEnd) {
-
   // Base url for event endpoint
   str = "https://api.seatgeek.com/2/events?client_id=MTkyNTE5NzR8MTU3MjU1NzY5Mi40MQ"
   // Add each sport to str
@@ -110,6 +137,7 @@ function buildQuery(sports, state, perPage, dateStart, dateEnd) {
   return str
 }
 
+// Handle sleection of each sport
 function sportsSelection() {
   $("form").on("click", ".sport", function() {
     $(this).toggleClass("selected");
@@ -122,6 +150,7 @@ function sportsSelection() {
   })
 }
 
+// Get array of all sports selected in the list
 function selectedSports() {
   let sports = [];
 
@@ -163,7 +192,7 @@ function displayEvents(jsonData, state) {
   $(".nav-bar").removeClass("hidden");
   $(".intro").addClass("hidden");
   $(".sport-selection").addClass("hidden");
-  $(".js-submit").addClass("hidden");
+  $(".nav-item").removeClass("selected");
 }
 
 // Display list of events
@@ -219,19 +248,32 @@ function displayEventsMap(state, events) {
       infowindow.open(map, marker);
     })
   }
-}
 
+  $(".map").removeClass("hidden");
+
+}
+// Function to handle next click in initial intro
 function handleNext() {
   $(".js-loc-next").on("click", function() {
-    let state = $("#state").val();
+    if (!(checkStateFormat()))  {
+      alert("Please enter 2 digit state code. eg. FL or NY etc");  
+    }
+  })
+}
 
-    if (state.length !== 2) {
-      alert("Please enter 2 digit state code. eg. FL or NY etc");
-    } else {
-      $(".location-selection").addClass("hidden");
-      $(".sport-selection").removeClass("hidden");
-      }
-    })
-  }
+//State format validation
+function checkStateFormat() {
+  let state = $("#state").val();
+
+  if (state.length !== 2) {
+    return false
+  } else {
+    $(".location-selection").addClass("hidden");
+    $(".sport-selection").removeClass("hidden");
+    $(".js-loc-next").remove();
+    $(".js-submit").removeAttr("disabled");
+    return true
+    }
+}
 
 $(handleClicks);

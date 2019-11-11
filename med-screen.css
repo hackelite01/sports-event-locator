@@ -11,10 +11,6 @@
     height: 450px;
   }
 
-  .results-list {
-    width: 95%;
-  }
-
   #sport-list {
     flex-direction: row;
     justify-content: left;
@@ -27,6 +23,5 @@
   .dates-container {
     width: 75%;
   }
-
 
 }
