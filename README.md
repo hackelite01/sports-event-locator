@@ -12,7 +12,7 @@ The app was created for those who may not be familiar with what sports events ar
 - State/Location Selection
 - Sports Selection
 
-## Screenshots
+## Screenshotsgit add .
 ### Welcome
 ![Welcome Screen](screenshots/welcome.JPG "Sports Event Locator")
 ### Sports Selection
