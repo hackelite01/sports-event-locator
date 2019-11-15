@@ -255,8 +255,8 @@ function displayEventsMap(state, events) {
     let locLat = events[i].venue.location.lat;
     let locLng = events[i].venue.location.lon;
     let eventDescription = `<div>
-        <h4 class="event-name">${events[i].title}<h4>
-        <h5 class="venue-name">${events[i].venue.name}<h5>
+        <h4 class="event-name">${events[i].title}</h4>
+        <h5 class="venue-name">${events[i].venue.name}</h5>
         <h6 class="venue-address">${events[i].venue.address}, ${events[i].venue.display_location}</h6>
         </div>`;
 
