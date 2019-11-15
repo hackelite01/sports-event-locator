@@ -15,8 +15,12 @@
 </head>
 <body>
   <section>
-    <header class="app-head"><i class="fas fa-search-location fa-2x logo"></i><h1>Sports Locator</h1></header>
+    <header class="app-head">
+      <i class="fas fa-search-location fa-2x logo"></i>
+      <h1>Sports Locator</h1>
+    </header>
   </section>
+
   <nav class="nav-bar hidden">
       <ul class="nav-list">
         <li class="nav-item" id="nav-loc">Location</li>
@@ -24,8 +28,8 @@
         <li class="nav-item" id="nav-filters">Search Filters</li>
       </ul>
   </nav>
-  <main>
 
+  <main>
     <section>
       <div class="intro">
         <p>Find live sports events in any state.</p>
@@ -45,7 +49,8 @@
 
       <fieldset class="sport-selection hidden">
           <h3 class="option-head">Select Sports</h3>
-          <p>Select the the types of sports you would like to search. HINT: You can search more than 1 at a time.</p>
+          <p>Select the the types of sports you would like to search.</p> 
+          <p>HINT: You can search more than one at a time.</p>
           <ul id="sport-list">
             <li class="sport" id="football">Football (NFL)</li>
             <li class="sport" id="tennis">Tennis</li>
@@ -93,7 +98,6 @@
             <input class="js-submit submit hidden" type="submit" value="Submit">
           </div>
         </fieldset>
-      
     </form>
 
     <section>
@@ -102,7 +106,6 @@
         <div class="results-list hidden"></div>
       </div>
     </section>
-
   </main>
 
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
