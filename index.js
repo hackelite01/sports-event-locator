@@ -1,10 +1,12 @@
+"use strict"
+
 function handleClicks() {
   formListener();
   navListner();     
   sportsSelection();
   handleNext();
   clearInput();
-  setDefaultDate();
+  initDatePickers();
 }
 // Clear sample text on text input click
 function clearInput() {
@@ -13,9 +15,9 @@ function clearInput() {
   })
 }
 //Set Starting date to "today"
-function setDefaultDate() {
-  let today = new Date().toISOString().slice(0, 10)
-  $("#date-start").val(`${today}`)
+function initDatePickers() {
+  $("#date-start").datepicker();
+  $("#date-end").datepicker();
 }
 
 function formListener() {
@@ -39,12 +41,31 @@ function formListener() {
     if ((checkStateFormat()) && (sports.length > 0)) {
      
     // Build url for API
-    url = buildQuery(sports, state, eventCount, dateStart, dateEnd);
+    let url = buildQuery(sports, state, eventCount, dateStart, dateEnd);
     // Fetch data from url  
     fetch(url)
-    .then(response => response.json())
-    .then(jsonResponse => displayEvents(jsonResponse, state))
-    .catch(error => alert(`There was a problem: ${error}. Please try again`))
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(response.status)
+      })
+      .then(jsonResponse => displayEvents(jsonResponse, state))
+      .catch(error => {
+        if (error == "Error: 400") {
+          $(".location-selection").removeClass("hidden");
+          $("#nav-loc").addClass("selected");
+
+          $(".sport-selection").addClass("hidden");
+          $("#nav-sport").removeClass("selected");
+
+          $(".search-options").addClass("hidden");
+          $("#nav-settings").removeClass("selected");
+
+          alert(`Invalid state code entered. Please check state code and try again`);
+        } else alert(`There was a problem. ${error}. Please try again`)
+        
+      })
     //Hide options after data has been displayed
     $(".js-loc-next").addClass("hidden");
     $(".location-selection").addClass("hidden");
@@ -82,36 +103,36 @@ function formListener() {
 function navListner() {
   $(".nav-list").on("click", "li", function() {
 
-    let selection = $(this).html();
-    // Toggle slected menu and hide others 
-    if (selection === "Location") {
+    let selection = $(this).attr('id');
+    // Toggle selected menu and hide others 
+    if (selection === "nav-loc") {
       $(".location-selection").toggleClass("hidden");
       $(".sport-selection").addClass("hidden");
       $(".search-options").addClass("hidden");
 
-      $("#nav-loc").toggleClass("selected");
+      $(this).toggleClass("selected");
       $("#nav-sport").removeClass("selected");
-      $("#nav-settings").removeClass("selected");
+      $("#nav-filters").removeClass("selected");
 
       $(".js-submit").removeClass("hidden");
-    } else if (selection === "Sports") {
+    } else if (selection === "nav-sport") {
       $(".sport-selection").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
       $(".search-options").addClass("hidden");
       
       $("#nav-loc").removeClass("selected");
-      $("#nav-sport").toggleClass("selected");
-      $("#nav-settings").removeClass("selected");
+      $(this).toggleClass("selected");
+      $("#nav-filters").removeClass("selected");
 
       $(".js-submit").removeClass("hidden");
-    } else if (selection === "Settings") {
+    } else if (selection === "nav-filters") {
       $(".search-options").toggleClass("hidden");
       $(".location-selection").addClass("hidden");
       $(".sport-selection").addClass("hidden");
       
       $("#nav-loc").removeClass("selected");
       $("#nav-sport").removeClass("selected");
-      $("#nav-settings").toggleClass("selected");
+      $(this).toggleClass("selected");
 
       $(".js-submit").removeClass("hidden");
     }
@@ -120,24 +141,24 @@ function navListner() {
 
 function buildQuery(sports, state, perPage, dateStart, dateEnd) {
   // Base url for event endpoint
-  str = "https://api.seatgeek.com/2/events?client_id=MTkyNTE5NzR8MTU3MjU1NzY5Mi40MQ"
+  let urlStr = "https://api.seatgeek.com/2/events?client_id=MTkyNTE5NzR8MTU3MjU1NzY5Mi40MQ"
   // Add each sport to str
-  sports.forEach(sport => str += `&taxonomies.name=${sport}`); 
+  sports.forEach(sport => urlStr += `&taxonomies.name=${sport}`); 
   // Add each venue to str
-  str += `&venue.state=${state}&per_page=${perPage}`
+  urlStr += `&venue.state=${state}&per_page=${perPage}`
 
   if (dateStart) {
-    str += `&datetime_local.gte=${dateStart}`
+    urlStr += `&datetime_local.gte=${dateStart}`
   }
 
   if (dateEnd) {
-    str += `&datetime_local.lte=${dateEnd}`
+    urlStr += `&datetime_local.lte=${dateEnd}`
   }
 
-  return str
+  return urlStr
 }
 
-// Handle sleection of each sport
+// Handle selection of each sport
 function sportsSelection() {
   $("form").on("click", ".sport", function() {
     $(this).toggleClass("selected");
@@ -164,6 +185,10 @@ function selectedSports() {
 function displayEvents(jsonData, state) {
   let events = jsonData.events;
 
+  $(".results-list").html(`<h3>Sports Events in ${state}</h3>
+                                <ul class="events-list"></ul>
+                              `);
+
   // Check if there are events for given sports, in selected state 
   if (events.length > 0) {
     
@@ -174,10 +199,6 @@ function displayEvents(jsonData, state) {
     }
 
     if ($("#display-list").is(":checked")) {
-      // Clear results list
-      $(".results-list").html(`<h3>Sports Events in ${state}</h3>
-                                <ul class="events-list"></ul>
-                              `);
       displayEventsList(state, events);
     } else {
       $(".results-list").addClass("hidden");
@@ -185,6 +206,7 @@ function displayEvents(jsonData, state) {
 
   } else { 
     $(".events-list").html(`<p>No available events in ${state}, during selected time period.</p>`);
+    $(".results-list").removeClass("hidden");
     $(".map").addClass("hidden");
   }
 
@@ -223,6 +245,7 @@ function displayEventsMap(state, events) {
   let map = new google.maps.Map(document.getElementById('map'), options);
   let geocoder = new google.maps.Geocoder();
   //Center map on selected State
+  state += ", USA"
   geocoder.geocode( { 'address': state }, function(results) {
     map.setCenter(results[0].geometry.location);
   });
@@ -257,7 +280,7 @@ function handleNext() {
   $(".js-loc-next").on("click", function() {
     if (!(checkStateFormat()))  {
       alert("Please enter 2 digit state code. eg. FL or NY etc");  
-    }
+    } else $(".intro").addClass("hidden");
   })
 }
 

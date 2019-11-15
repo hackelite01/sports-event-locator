@@ -1,6 +1,6 @@
-@media screen and (min-width: 400px) and (max-width:750px) {
+@media screen and (min-width: 450px) and (max-width:750px) {
   h1 {
-    font-size: 26px;
+    font-size: 36px;
   }
 
   .sport {
@@ -18,10 +18,6 @@
 
   .event {
     margin-left: 25px;
-  }
-
-  .dates-container {
-    width: 75%;
   }
 
 }
