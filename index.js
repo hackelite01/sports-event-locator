@@ -228,9 +228,10 @@ function displayEventsList(state, events) {
                                   <div class="event-date">${date[0]}</div>
                                   <div class="event-type">${eventType}</div> 
                                 </div>
-                                <div class="event-right"><div class="event-name">${events[i].title}</div>
-                                                          <div class="event-venue">${events[i].venue.name}</div>
-                                                        </div>
+                                <div class="event-right">
+                                  <div class="event-name">${events[i].title}</div>
+                                  <div class="event-venue">${events[i].venue.name}</div>
+                                </div>
                               </li>`)
   }
 
@@ -255,10 +256,10 @@ function displayEventsMap(state, events) {
     let locLat = events[i].venue.location.lat;
     let locLng = events[i].venue.location.lon;
     let eventDescription = `<div>
-        <h4 class="event-name">${events[i].title}</h4>
-        <h5 class="venue-name">${events[i].venue.name}</h5>
-        <h6 class="venue-address">${events[i].venue.address}, ${events[i].venue.display_location}</h6>
-        </div>`;
+                              <h4 class="event-name">${events[i].title}</h4>
+                              <h5 class="venue-name">${events[i].venue.name}</h5>
+                              <h6 class="venue-address">${events[i].venue.address}, ${events[i].venue.display_location}</h6>
+                            </div>`;
 
     let infowindow = new google.maps.InfoWindow({
       content: eventDescription
