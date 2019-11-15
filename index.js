@@ -14,7 +14,7 @@ function clearInput() {
     $(this).val("");
   })
 }
-//Set Starting date to "today"
+// Load date pickers
 function initDatePickers() {
   $("#date-start").datepicker();
   $("#date-end").datepicker();
@@ -245,13 +245,14 @@ function displayEventsMap(state, events) {
   };
   let map = new google.maps.Map(document.getElementById('map'), options);
   let geocoder = new google.maps.Geocoder();
-  //Center map on selected State
+
+  // Geocode state and center map on selected State
   state += ", USA"
   geocoder.geocode( { 'address': state }, function(results) {
     map.setCenter(results[0].geometry.location);
   });
 
-  //Place event Markers
+  // Place event Markers
   for (let i = 0; i < events.length; i++) {
     let locLat = events[i].venue.location.lat;
     let locLng = events[i].venue.location.lon;
@@ -280,12 +281,12 @@ function displayEventsMap(state, events) {
 function handleNext() {
   $(".js-loc-next").on("click", function() {
     if (!(checkStateFormat()))  {
-      alert("Please enter 2 digit state code. eg. FL or NY etc");  
+      alert("Please enter two digit state code. eg. FL or NY etc");  
     } else $(".intro").addClass("hidden");
   })
 }
 
-//State format validation
+// State format validation
 function checkStateFormat() {
   let state = $("#state").val();
 
