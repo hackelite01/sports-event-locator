@@ -1,304 +1,200 @@
-"use strict"
+"use strict";
 
 function handleClicks() {
-  formListener();
-  navListner();     
-  sportsSelection();
-  handleNext();
-  clearInput();
-  initDatePickers();
+    formListener();
+    navListener();
+    eventsSelection(); // Renamed from sportsSelection
+    handleNext();
+    clearInput();
+    initDatePickers();
 }
+
 // Clear sample text on text input click
 function clearInput() {
-  $("#state").on("click", function() {
-    $(this).val("");
-  })
+    $("#zipcode").on("click", function () {
+        $(this).val("");
+    })
 }
+
 // Load date pickers
 function initDatePickers() {
-  $("#date-start").datepicker();
-  $("#date-end").datepicker();
+    $("#date-start").datepicker();
+    $("#date-end").datepicker();
 }
 
 function formListener() {
-  $("form").on("submit", function(event) {
-    event.preventDefault();
+    $("form").on("submit", function (event) {
+        event.preventDefault();
 
-    // Display Navigation and Map on form submit
-    $(".navbar").removeClass("hidden")
+        // Display Navigation and Map on form submit
+        $(".navbar").removeClass("hidden");
 
-    // Get state slection from form  
-    let state = $("#state").val();
-    //Get selected sports from form
-    let sports = selectedSports();
-    // Get no events to displayed per page
-    let eventCount = $("#no-events").val();
-    // Get user selected selected date range
-    let dateStart = $("#date-start").val();
-    let dateEnd = $("#date-end").val();
+        // Get zipcode selection from form  
+        let zipcode = $("#zipcode").val();
+        // Get selected events from form
+        let events = selectedEvents(); // Renamed from selectedSports
+        // Get no events to displayed per page
+        let eventCount = $("#no-events").val();
+        // Get user selected selected date range
+        let dateStart = $("#date-start").val();
+        let dateEnd = $("#date-end").val();
 
-    // Input validation before API calling
-    if ((checkStateFormat()) && (sports.length > 0)) {
-     
-    // Build url for API
-    let url = buildQuery(sports, state, eventCount, dateStart, dateEnd);
-    // Fetch data from url  
-    fetch(url)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
+        // Input validation before API calling
+        if (zipcode && events.length > 0) {
+
+            // Build url for API
+            let url = buildQuery(events, zipcode, eventCount, dateStart, dateEnd);
+            // Fetch data from url  
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(response.status)
+                })
+                .then(jsonResponse => displayEvents(jsonResponse, zipcode))
+                .catch(error => {
+                    alert(`There was a problem. ${error}. Please try again`);
+                });
+
+            //Hide options after data has been displayed
+            $(".js-loc-next").addClass("hidden");
+            $(".location-selection").addClass("hidden");
+            $(".search-options").addClass("hidden");
+            $(".js-submit").val("Update")
+
+        } else {
+            if (!zipcode) { // Display location selection if no location entered
+                alert("Please enter a valid zipcode.");
+
+                $(".location-selection").removeClass("hidden");
+                $("#nav-loc").addClass("selected");
+
+                $(".event-selection").addClass("hidden"); // Renamed from sport-selection
+                $("#nav-event").removeClass("selected"); // Renamed from nav-sport
+
+                $(".search-options").addClass("hidden");
+                $("#nav-settings").removeClass("selected");
+            } else { // Display events selection if no event selected
+                alert(`Please select at least one event to search`);
+
+                $(".event-selection").removeClass("hidden"); // Renamed from sport-selection
+                $("#nav-event").addClass("selected"); // Renamed from nav-sport
+
+                $(".location-selection").addClass("hidden");
+                $("#nav-loc").removeClass("selected");
+
+                $(".search-options").addClass("hidden");
+                $("#nav-settings").removeClass("selected");
+            }
         }
-        throw new Error(response.status)
-      })
-      .then(jsonResponse => displayEvents(jsonResponse, state))
-      .catch(error => {
-        if (error == "Error: 400") {
-          $(".location-selection").removeClass("hidden");
-          $("#nav-loc").addClass("selected");
-
-          $(".sport-selection").addClass("hidden");
-          $("#nav-sport").removeClass("selected");
-
-          $(".search-options").addClass("hidden");
-          $("#nav-settings").removeClass("selected");
-
-          alert(`Invalid state code entered. Please check state code and try again`);
-        } else alert(`There was a problem. ${error}. Please try again`)
-        
-      })
-    //Hide options after data has been displayed
-    $(".js-loc-next").addClass("hidden");
-    $(".location-selection").addClass("hidden");
-    $(".search-options").addClass("hidden");
-    $(".js-submit").val("Update")
-  
-    } else {
-        if (!(checkStateFormat())) { // Display location selection if no location entered
-          alert("Please enter 2 digit state code. eg. FL or NY etc");
-
-          $(".location-selection").removeClass("hidden");
-          $("#nav-loc").addClass("selected");
-
-          $(".sport-selection").addClass("hidden");
-          $("#nav-sport").removeClass("selected");
-
-          $(".search-options").addClass("hidden");
-          $("#nav-settings").removeClass("selected");
-        } else {  // Display sports selection if no sport selected
-          alert(`Please select at least one sports to search`);
-
-          $(".sport-selection").removeClass("hidden");
-          $("#nav-sport").addClass("selected");
-
-          $(".location-selection").addClass("hidden");
-          $("#nav-loc").removeClass("selected");
-
-          $(".search-options").addClass("hidden");
-          $("#nav-settings").removeClass("selected");
-        }
-      }
-  })
-}
-
-function navListner() {
-  $(".nav-list").on("click", "li", function() {
-
-    let selection = $(this).attr('id');
-    // Toggle selected menu and hide others 
-    if (selection === "nav-loc") {
-      $(".location-selection").toggleClass("hidden");
-      $(".sport-selection").addClass("hidden");
-      $(".search-options").addClass("hidden");
-
-      $(this).toggleClass("selected");
-      $("#nav-sport").removeClass("selected");
-      $("#nav-filters").removeClass("selected");
-
-      $(".js-submit").removeClass("hidden");
-    } else if (selection === "nav-sport") {
-      $(".sport-selection").toggleClass("hidden");
-      $(".location-selection").addClass("hidden");
-      $(".search-options").addClass("hidden");
-      
-      $("#nav-loc").removeClass("selected");
-      $(this).toggleClass("selected");
-      $("#nav-filters").removeClass("selected");
-
-      $(".js-submit").removeClass("hidden");
-    } else if (selection === "nav-filters") {
-      $(".search-options").toggleClass("hidden");
-      $(".location-selection").addClass("hidden");
-      $(".sport-selection").addClass("hidden");
-      
-      $("#nav-loc").removeClass("selected");
-      $("#nav-sport").removeClass("selected");
-      $(this).toggleClass("selected");
-
-      $(".js-submit").removeClass("hidden");
-    }
-  })
-}
-
-function buildQuery(sports, state, perPage, dateStart, dateEnd) {
-  // Base url for event endpoint
-  let urlStr = "https://api.seatgeek.com/2/events?client_id=MTkyNTE5NzR8MTU3MjU1NzY5Mi40MQ"
-  // Add each sport to str
-  sports.forEach(sport => urlStr += `&taxonomies.name=${sport}`); 
-  // Add each venue to str
-  urlStr += `&venue.state=${state}&per_page=${perPage}`
-
-  if (dateStart) {
-    urlStr += `&datetime_local.gte=${dateStart}`
-  }
-
-  if (dateEnd) {
-    urlStr += `&datetime_local.lte=${dateEnd}`
-  }
-
-  return urlStr
-}
-
-// Handle selection of each sport
-function sportsSelection() {
-  $("form").on("click", ".sport", function() {
-    $(this).toggleClass("selected");
-
-    if ($(".sport.selected").length === 0) {
-      $(".js-submit").addClass("hidden");
-    } else {
-        $(".js-submit").removeClass("hidden");
-    }
-  })
-}
-
-// Get array of all sports selected in the list
-function selectedSports() {
-  let sports = [];
-
-  $(".sport.selected").each( function() {
-  sports.push($(this).attr("id"));
-  });
-  
-  return sports;
-}
-
-function displayEvents(jsonData, state) {
-  let events = jsonData.events;
-
-  $(".results-list").html(`<h3>Sports Events in ${state}</h3>
-                                <ul class="events-list"></ul>
-                              `);
-
-  // Check if there are events for given sports, in selected state 
-  if (events.length > 0) {
-    
-    if ($("#display-map").is(":checked")) {
-      displayEventsMap(state, events);
-    } else {
-      $(".map").addClass("hidden");
-    }
-
-    if ($("#display-list").is(":checked")) {
-      displayEventsList(state, events);
-    } else {
-      $(".results-list").addClass("hidden");
-    }
-
-  } else { 
-    $(".events-list").html(`<p>No available events in ${state}, during selected time period.</p>`);
-    $(".results-list").removeClass("hidden");
-    $(".map").addClass("hidden");
-  }
-
-  // Show nav/options menu and hide other controls
-  $(".nav-bar").removeClass("hidden");
-  $(".intro").addClass("hidden");
-  $(".sport-selection").addClass("hidden");
-  $(".nav-item").removeClass("selected");
-}
-
-// Display list of events
-function displayEventsList(state, events) {
-
-  for (let i = 0; i < events.length; i++) {
-    let date = events[i].datetime_local.split("T");
-    let eventType = events[i].taxonomies[1].name.split("_").join(" ");
-    $(".events-list").append(`<li class="event">
-                                <div class="event-left">
-                                  <div class="event-date">${date[0]}</div>
-                                  <div class="event-type">${eventType}</div> 
-                                </div>
-                                <div class="event-right">
-                                  <div class="event-name">${events[i].title}</div>
-                                  <div class="event-venue">${events[i].venue.name}</div>
-                                </div>
-                              </li>`)
-  }
-
-  $(".results-list").removeClass("hidden");
-}
-
-function displayEventsMap(state, events) {
-   // Set map options
-  let options = {
-    zoom: 7, 
-  };
-  let map = new google.maps.Map(document.getElementById('map'), options);
-  let geocoder = new google.maps.Geocoder();
-
-  // Geocode state and center map on selected State
-  state += ", USA"
-  geocoder.geocode( { 'address': state }, function(results) {
-    map.setCenter(results[0].geometry.location);
-  });
-
-  // Place event Markers
-  for (let i = 0; i < events.length; i++) {
-    let locLat = events[i].venue.location.lat;
-    let locLng = events[i].venue.location.lon;
-    let eventDescription = `<div>
-                              <h4 class="event-name">${events[i].title}</h4>
-                              <h5 class="venue-name">${events[i].venue.name}</h5>
-                              <h6 class="venue-address">${events[i].venue.address}, ${events[i].venue.display_location}</h6>
-                            </div>`;
-
-    let infowindow = new google.maps.InfoWindow({
-      content: eventDescription
-    });    
-
-    let marker = new google.maps.Marker({position: {lat: locLat, lng: locLng}, map: map, title: `${events[i].title}`});
-    
-    
-    marker.addListener("click", function() {
-      infowindow.open(map, marker);
     })
-  }
-
-  $(".map").removeClass("hidden");
-
 }
+
+function navListener() {
+    $(".nav-list").on("click", "li", function () {
+
+        let selection = $(this).attr('id');
+        // Toggle selected menu and hide others 
+        if (selection === "nav-loc") {
+            $(".location-selection").toggleClass("hidden");
+            $(".event-selection").addClass("hidden"); // Renamed from sport-selection
+            $(".search-options").addClass("hidden");
+
+            $(this).toggleClass("selected");
+            $("#nav-event").removeClass("selected"); // Renamed from nav-sport
+            $("#nav-filters").removeClass("selected");
+
+            $(".js-submit").removeClass("hidden");
+        } else if (selection === "nav-event") { // Renamed from nav-sport
+            $(".event-selection").toggleClass("hidden"); // Renamed from sport-selection
+            $(".location-selection").addClass("hidden");
+            $(".search-options").addClass("hidden");
+
+            $("#nav-loc").removeClass("selected");
+            $(this).toggleClass("selected");
+            $("#nav-filters").removeClass("selected");
+
+            $(".js-submit").removeClass("hidden");
+        } else if (selection === "nav-filters") {
+            $(".search-options").toggleClass("hidden");
+            $(".location-selection").addClass("hidden");
+            $(".event-selection").addClass("hidden"); // Renamed from sport-selection
+
+            $("#nav-loc").removeClass("selected");
+            $("#nav-event").removeClass("selected"); // Renamed from nav-sport
+            $(this).toggleClass("selected");
+
+            $(".js-submit").removeClass("hidden");
+        }
+    })
+}
+
+function buildQuery(events, zipcode, perPage, dateStart, dateEnd) {
+    // Base url for event endpoint
+    let urlStr = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&key=YOUR_MAP_API_KEY`; // Use Google Maps Geocoding API
+
+    return urlStr;
+}
+
+// Handle selection of each event
+function eventsSelection() {
+    $("form").on("click", ".event", function () { // Renamed from sport
+        $(this).toggleClass("selected");
+
+        if ($(".event.selected").length === 0) { // Renamed from sport.selected
+            $(".js-submit").addClass("hidden");
+        } else {
+            $(".js-submit").removeClass("hidden");
+        }
+    })
+}
+
+// Get array of all events selected in the list
+function selectedEvents() { // Renamed from selectedSports
+    let events = [];
+
+    $(".event.selected").each(function () { // Renamed from sport.selected
+        events.push($(this).attr("id"));
+    });
+
+    return events;
+}
+
+function displayEvents(jsonData, zipcode) {
+    let events = jsonData.results; // Response from Geocoding API
+
+    if (events.length > 0) {
+        displayEventsMap(zipcode, events);
+    } else {
+        alert("No locations found for the provided zipcode.");
+    }
+}
+
+function displayEventsMap(zipcode, results) {
+    let options = {
+        zoom: 10,
+        center: results[0].geometry.location
+    };
+    let map = new google.maps.Map(document.getElementById('map'), options);
+
+    let marker = new google.maps.Marker({
+        position: results[0].geometry.location,
+        map: map,
+        title: 'Location' // Adjust as needed
+    });
+}
+
 // Function to handle next click in initial intro
 function handleNext() {
-  $(".js-loc-next").on("click", function() {
-    if (!(checkStateFormat()))  {
-      alert("Please enter two digit state code. eg. FL or NY etc");  
-    } else $(".intro").addClass("hidden");
-  })
-}
-
-// State format validation
-function checkStateFormat() {
-  let state = $("#state").val();
-
-  if (state.length !== 2) {
-    return false
-  } else {
-    $(".location-selection").addClass("hidden");
-    $(".sport-selection").removeClass("hidden");
-    $(".js-loc-next").remove();
-    $(".js-submit").removeAttr("disabled");
-    return true
-    }
+    $(".js-loc-next").on("click", function () {
+        let zipcode = $("#zipcode").val();
+        if (!zipcode || zipcode.length !== 6) {
+            alert("Please enter a valid 6-digit zipcode.");
+        } else {
+            $(".intro").addClass("hidden");
+        }
+    })
 }
 
 $(handleClicks);
