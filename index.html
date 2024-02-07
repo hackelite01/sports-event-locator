@@ -24,7 +24,7 @@
   <nav class="nav-bar hidden">
       <ul class="nav-list">
         <li class="nav-item" id="nav-loc">Location</li>
-        <li class="nav-item" id="nav-sport">Sports</li>
+        <li class="nav-item" id="nav-event">Events</li> <!-- Changed from "nav-sport" -->
         <li class="nav-item" id="nav-filters">Search Filters</li>
       </ul>
   </nav>
@@ -32,34 +32,29 @@
   <main>
     <section>
       <div class="intro">
-        <p>Find live sports events in any state.</p>
-        <p>Start by selecting the state in which you would like to see results.</p>
+        <p>Find live events in any location.</p> <!-- Changed from "Find live sports events in any state." -->
+        <p>Start by entering the zipcode of your desired location.</p> <!-- Changed from "Start by selecting the state in which you would like to see results." -->
       </div>
     </section>
 
     <form class="options-form">
       <fieldset class="location-selection">
-          <h3 class="option-head">Select Location</h3>
-          <p>Enter 2 digit state code below. If you dont know the code of your state please refer to this handy <a href="https://cdiac.ess-dive.lbl.gov/climate/temp/us_recordtemps/states.html" target="_blank" class="text-link">list of state codes</a>.</p>
-          <label for="state">State Code</label>
-          <input id="state" type="text" value="e.g. NY" pattern="[A-Za-z]{2}" required>
+          <h3 class="option-head">Enter Zipcode</h3> <!-- Changed from "Select Location" -->
+          <p>Enter the zipcode of the location you want to search events for.</p> <!-- Changed from "Enter 2 digit state code below..." -->
+          <label for="zipcode">Zipcode</label> <!-- Changed from "State Code" -->
+          <input id="zipcode" type="text" pattern="\d{6}" required> <!-- Changed from "state" -->
           <input class="next js-loc-next" value="Next" type="button">
           <input class="js-submit submit hidden" type="submit" disabled>
       </fieldset> 
 
-      <fieldset class="sport-selection hidden">
-          <h3 class="option-head">Select Sports</h3>
-          <p>Select the the types of sports you would like to search.</p> 
+      <fieldset class="event-selection hidden"> <!-- Changed from "sport-selection" -->
+          <h3 class="option-head">Select Events</h3> <!-- Changed from "Select Sports" -->
+          <p>Select the types of events you would like to search.</p> <!-- Changed from "Select the the types of sports you would like to search." -->
           <p>HINT: You can search more than one at a time.</p>
           <ul id="sport-list">
-            <li class="sport" id="football">Football (NFL)</li>
-            <li class="sport" id="tennis">Tennis</li>
-            <li class="sport" id="soccer">Soccer (MLS)</li>
-            <li class="sport" id="mlb">Baseball (MLB)</li>
-            <li class="sport" id="nba">Basketball (NBA)</li>
-            <li class="sport" id="auto_racing">Motor Racing</li>
-            <li class="sport" id="golf">Golf (PGA Tour)</li>
-            <li class="sport" id="fighting" >Combat Sports</li>
+            <li class="event" id="garba">Garba Ground</li> <!-- Changed from "sport" -->
+            <li class="event" id="navratri">Navratri Celebration</li> <!-- Changed from "sport" -->
+            <!-- Add more event options as needed -->
           </ul>
 
           <input class="js-submit submit hidden" type="submit">
@@ -110,7 +105,7 @@
 
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDidD3i6ksEApaIp2muKG8ZGMU2WboPU7U"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_MAP_API_KEY"></script> <!-- Change with your actual API key -->
   <script src="index.js"></script>
 </body>
 </html>
