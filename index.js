@@ -23,7 +23,7 @@ function initDatePickers() {
 }
 
 function formListener() {
-    $("form").on("submit", function (event) {
+    $("form").on("submit", function(event) {
         event.preventDefault();
 
         // Display Navigation and Map on form submit
@@ -92,7 +92,7 @@ function formListener() {
 }
 
 function navListener() {
-    $(".nav-list").on("click", "li", function () {
+    $(".nav-list").on("click", "li", function() {
 
         let selection = $(this).attr('id');
         // Toggle selected menu and hide others 
