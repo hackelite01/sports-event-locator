@@ -132,7 +132,7 @@ function navListener() {
 
 function buildQuery(events, zipcode, perPage, dateStart, dateEnd) {
     // Base url for event endpoint
-    let urlStr = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&key=YOUR_MAP_API_KEY`; // Use Google Maps Geocoding API
+    let urlStr = `https://maps.googleapis.com/maps/api/geocode/json?address=${zipcode}&key=AIzaSyDidD3i6ksEApaIp2muKG8ZGMU2WboPU7U`; // Use Google Maps Geocoding API
 
     return urlStr;
 }
